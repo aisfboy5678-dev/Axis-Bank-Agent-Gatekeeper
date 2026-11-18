@@ -34,5 +34,17 @@
     "registered_at": "2026-11-15 08:00:00",
     "status": "REVOKED",
     "revoked_at": "2026-11-17 16:45:00"
+  },
+  {
+    "customer_name": "vishal kumar",
+    "agent_name": "sales manager",
+    "permitted_actions": [
+      "View Balance",
+      "Pay Bill"
+    ],
+    "transaction_permission": true,
+    "registered_at": "2026-11-18 23:54:00",
+    "status": "REVOKED",
+    "revoked_at": "2026-11-18 23:54:25"
   }
 ]

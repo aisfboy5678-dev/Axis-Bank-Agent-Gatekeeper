@@ -1,2 +1,4 @@
 Timestamp,Customer Name,Agent Name,Action,Amount (₹),Decision,Rule ID,Rule Name,Policy Rationale
+2026-11-19 00:17:43,Rahul Sharma,AxisFinanceBot,Transfer Money,6500.0,ALLOW,R4,"Authorised Payment/Transfer <= ₹10,000","Agent 'AxisFinanceBot' is authorized for 'Transfer Money'. The amount ₹6,500.00 is within the ₹10,000 autonomous threshold."
+2026-11-19 00:17:34,Rahul Sharma,AxisFinanceBot,Transfer Money,6500.0,ALLOW,R4,"Authorised Payment/Transfer <= ₹10,000","Agent 'AxisFinanceBot' is authorized for 'Transfer Money'. The amount ₹6,500.00 is within the ₹10,000 autonomous threshold."
 2026-11-18 23:34:07,Rahul Sharma,AxisFinanceBot,Transfer Money,6500.0,ALLOW,R4,"Authorised Payment/Transfer <= ₹10,000","Agent 'AxisFinanceBot' is authorized for 'Transfer Money'. The amount ₹6,500.00 is within the ₹10,000 autonomous threshold."

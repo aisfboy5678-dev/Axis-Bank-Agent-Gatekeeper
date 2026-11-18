@@ -8,7 +8,7 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # ==========================================
 st.set_page_config(
-    page_title="Axis Bank Agent Gatekeeper - Phase 2",
+    page_title="Axis Bank Agent Gatekeeper",
     page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -47,7 +47,7 @@ def get_default_agents():
         {
             "customer_name": "Amit Verma",
             "agent_name": "LegacyHelper",
-            "permitted_actions": ["View Balance", "Transfer Money"],
+            "permitted_actions": ["View Balance", "Pay Bill", "Transfer Money"],
             "transaction_permission": True,
             "registered_at": "2026-11-15 08:00:00",
             "status": "REVOKED",
@@ -150,7 +150,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
             "decision": "BLOCK",
             "rule_id": "R1",
             "rule_name": "Agent Status REVOKED",
-            "reason": f"Agent '{a_name}' was explicitly REVOKED by customer '{c_name}' on {revoked_time}. All operations are blocked."
+            "reason": f"Agent '{a_name}' was explicitly REVOKED by customer '{c_name}' on {revoked_time}. All operations are blocked regardless of transaction parameters."
         }
 
     # -------------------------------------------------------------
@@ -161,7 +161,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
             "decision": "BLOCK",
             "rule_id": "R2",
             "rule_name": "Unregistered / Unknown Agent",
-            "reason": f"Agent '{a_name}' is not registered under customer '{c_name}'. Unrecognized agents are blocked by default."
+            "reason": f"Agent '{a_name}' is not registered under customer '{c_name}'. Unrecognized agents are blocked by default to prevent rogue tool calls."
         }
 
     # Agent is registered and ACTIVE
@@ -177,7 +177,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
                 "decision": "ALLOW",
                 "rule_id": "R3",
                 "rule_name": "View Balance by Active Agent",
-                "reason": f"Agent '{a_name}' is active and authorized for read-only balance inquiry. Zero financial risk; auto-execution permitted."
+                "reason": f"Agent '{a_name}' is active and authorized for read-only balance inquiry. Zero financial loss risk; autonomous fulfillment approved."
             }
         else:
             # Action not granted by customer -> falls to R6
@@ -185,7 +185,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
                 "decision": "BLOCK",
                 "rule_id": "R6",
                 "rule_name": "Action Not Permitted by Customer",
-                "reason": f"Agent '{a_name}' attempted 'View Balance', which was NOT included in customer's permitted actions ({permitted_actions})."
+                "reason": f"Agent '{a_name}' attempted 'View Balance', which was NOT granted by customer '{c_name}' in permitted actions ({permitted_actions})."
             }
 
     # For Financial Transactions (Pay Bill, Transfer Money)
@@ -201,7 +201,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
                 "decision": "ALLOW",
                 "rule_id": "R4",
                 "rule_name": "Authorised Payment/Transfer <= ₹10,000",
-                "reason": f"Agent '{a_name}' is authorized for '{action}'. The amount ₹{amount:,.2f} is within the ₹10,000 autonomous threshold."
+                "reason": f"Agent '{a_name}' is authorized for '{action}'. The amount ₹{amount:,.2f} is within the ₹10,000 autonomous execution threshold."
             }
         # ---------------------------------------------------------
         # R5: Payment/transfer above ₹10,000 -> ASK CUSTOMER
@@ -211,7 +211,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
                 "decision": "ASK CUSTOMER",
                 "rule_id": "R5",
                 "rule_name": "Payment/Transfer Exceeds ₹10,000",
-                "reason": f"Agent '{a_name}' requested '{action}' of ₹{amount:,.2f}, exceeding the ₹10,000 autonomous threshold. Step-up customer approval (OTP) is required."
+                "reason": f"Agent '{a_name}' requested '{action}' of ₹{amount:,.2f}, which exceeds the ₹10,000 autonomous threshold. Step-up customer approval (OTP/2FA) is required."
             }
 
     # -------------------------------------------------------------
@@ -249,7 +249,7 @@ def evaluate_request(customer_name, agent_name, action, amount, agents_list):
 # ==========================================
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
@@ -311,6 +311,15 @@ st.markdown("""
         letter-spacing: 0.6px;
     }
 
+    /* Compulsory Test Cases Box */
+    .test-box-header {
+        background: linear-gradient(90deg, #FDF2F7 0%, #F8FAFC 100%);
+        border: 1.5px solid #F3C4D8;
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+
     /* Status Badges */
     .status-active {
         background-color: #D1FAE5;
@@ -334,7 +343,7 @@ st.markdown("""
     .decision-banner {
         padding: 1.5rem;
         border-radius: 10px;
-        margin-top: 1.2rem;
+        margin-top: 1rem;
         margin-bottom: 1.2rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
@@ -370,13 +379,15 @@ st.markdown("""
     .tag-ask { background-color: #FDE68A; color: #78350F; }
     .tag-block { background-color: #FECACA; color: #7F1D1D; }
 
-    /* Policy Cards */
-    .policy-box {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 10px;
-        padding: 1rem 1.25rem;
-        margin-bottom: 0.75rem;
+    .test-scenario-badge {
+        background-color: #EFF6FF;
+        border-left: 4px solid #3B82F6;
+        color: #1E40AF;
+        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        font-weight: 500;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -417,36 +428,129 @@ with tab_sim:
     st.markdown("### 🎮 Gatekeeper Request Simulator")
     st.caption("Submit an AI agent transaction request to evaluate it against the 8 strict priority rules (Autonomous Limit: ₹10,000).")
 
-    # Quick Preset Scenarios for Grader / Student
-    st.markdown("##### ⚡ Quick Test Presets (Click to Auto-fill all 8 Rules):")
-    preset_cols = st.columns(4)
-    
-    preset_data = None
-    if preset_cols[0].button("Test R1: Revoked Agent", use_container_width=True):
-        preset_data = ("Amit Verma", "LegacyHelper", "View Balance", 0.0)
-    if preset_cols[1].button("Test R2: Unknown Agent", use_container_width=True):
-        preset_data = ("Suresh Kumar", "HackerBot", "Pay Bill", 2500.0)
-    if preset_cols[2].button("Test R3: View Balance (Safe)", use_container_width=True):
-        preset_data = ("Rahul Sharma", "AxisFinanceBot", "View Balance", 0.0)
-    if preset_cols[3].button("Test R4: Transfer <= ₹10,000", use_container_width=True):
-        preset_data = ("Rahul Sharma", "AxisFinanceBot", "Transfer Money", 6500.0)
+    # ==========================================================
+    # 6 COMPULSORY ASSIGNMENT TEST CASES (VIDEO RECORDING PRESETS)
+    # ==========================================================
+    st.markdown("""
+    <div class="test-box-header">
+        <div style="font-size: 1.1rem; font-weight: 800; color: #97144D; margin-bottom: 0.25rem;">
+            🎬 6 Compulsory Assignment Test Cases (Video Demonstration Quick-Presets)
+        </div>
+        <div style="font-size: 0.88rem; color: #475569;">
+            Click any scenario button below to auto-fill inputs, execute the Gatekeeper evaluation, and immediately show the rule and decision on screen.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    preset_cols2 = st.columns(4)
-    if preset_cols2[0].button("Test R5: Transfer > ₹10,000", use_container_width=True):
-        preset_data = ("Rahul Sharma", "AxisFinanceBot", "Transfer Money", 25000.0)
-    if preset_cols2[1].button("Test R6: Action Not Permitted", use_container_width=True):
-        preset_data = ("Priya Patel", "BalanceChecker", "Transfer Money", 4000.0)
-    if preset_cols2[2].button("Test R7: No Trans. Permission", use_container_width=True):
-        # We ensure Priya has Pay Bill in actions but transaction permission False
-        preset_data = ("Priya Patel", "BalanceChecker", "Pay Bill", 1200.0)
-    if preset_cols2[3].button("Test R8: Invalid Amount (-₹500)", use_container_width=True):
-        preset_data = ("Rahul Sharma", "AxisFinanceBot", "Transfer Money", -500.0)
+    c_row1 = st.columns(3)
+    c_row2 = st.columns(3)
 
-    if preset_data:
-        st.session_state["sim_cust"] = preset_data[0]
-        st.session_state["sim_agent"] = preset_data[1]
-        st.session_state["sim_action"] = preset_data[2]
-        st.session_state["sim_amount"] = preset_data[3]
+    selected_test = None
+
+    # Test 1: Known registered agent viewing balance -> ALLOW (R3)
+    if c_row1[0].button("▶️ Test 1: View Balance (R3)", use_container_width=True, help="Registered agent viewing balance -> ALLOW"):
+        selected_test = {
+            "title": "Test 1: Known registered agent viewing balance",
+            "cust": "Rahul Sharma",
+            "agent": "AxisFinanceBot",
+            "action": "View Balance",
+            "amount": 0.0,
+            "expected": "🟢 ALLOW (Rule R3: View Balance by Active Agent)"
+        }
+
+    # Test 2: Unknown unregistered agent transferring ₹2,000 -> BLOCK (R2)
+    if c_row1[1].button("▶️ Test 2: Unknown Agent (R2)", use_container_width=True, help="Unknown agent transferring ₹2,000 -> BLOCK"):
+        selected_test = {
+            "title": "Test 2: Unknown unregistered agent transferring ₹2,000",
+            "cust": "Rahul Sharma",
+            "agent": "ShadowBot",
+            "action": "Transfer Money",
+            "amount": 2000.0,
+            "expected": "🔴 BLOCK (Rule R2: Unregistered / Unknown Agent)"
+        }
+
+    # Test 3: Registered agent paying ₹15,000 (above ₹10,000 limit) -> ASK CUSTOMER (R5)
+    if c_row1[2].button("▶️ Test 3: Pay ₹15,000 > Limit (R5)", use_container_width=True, help="Registered agent paying ₹15,000 -> ASK CUSTOMER"):
+        selected_test = {
+            "title": "Test 3: Registered agent paying ₹15,000 (above ₹10,000 limit)",
+            "cust": "Rahul Sharma",
+            "agent": "AxisFinanceBot",
+            "action": "Pay Bill",
+            "amount": 15000.0,
+            "expected": "🟡 ASK CUSTOMER (Rule R5: Payment/Transfer Exceeds ₹10,000)"
+        }
+
+    # Test 4: Registered agent paying ₹5,000 (within ₹10,000 limit) -> ALLOW (R4)
+    if c_row2[0].button("▶️ Test 4: Pay ₹5,000 <= Limit (R4)", use_container_width=True, help="Registered agent paying ₹5,000 -> ALLOW"):
+        selected_test = {
+            "title": "Test 4: Registered agent paying ₹5,000 (within ₹10,000 limit)",
+            "cust": "Rahul Sharma",
+            "agent": "AxisFinanceBot",
+            "action": "Pay Bill",
+            "amount": 5000.0,
+            "expected": "🟢 ALLOW (Rule R4: Authorised Payment <= ₹10,000)"
+        }
+
+    # Test 5: Revoked agent trying to pay ₹500 -> BLOCK (R1)
+    if c_row2[1].button("▶️ Test 5: Revoked Agent ₹500 (R1)", use_container_width=True, help="Revoked agent trying to pay ₹500 -> BLOCK"):
+        selected_test = {
+            "title": "Test 5: Revoked agent trying to pay ₹500",
+            "cust": "Amit Verma",
+            "agent": "LegacyHelper",
+            "action": "Pay Bill",
+            "amount": 500.0,
+            "expected": "🔴 BLOCK (Rule R1: Agent Status REVOKED)"
+        }
+
+    # Test 6: Registered agent trying an unauthorised transfer action -> BLOCK (R6)
+    if c_row2[2].button("▶️ Test 6: Unauthorised Action (R6)", use_container_width=True, help="Registered agent attempting transfer without permission -> BLOCK"):
+        selected_test = {
+            "title": "Test 6: Registered agent trying an unauthorised transfer action",
+            "cust": "Priya Patel",
+            "agent": "BalanceChecker",
+            "action": "Transfer Money",
+            "amount": 3000.0,
+            "expected": "🔴 BLOCK (Rule R6: Action Not Permitted by Customer)"
+        }
+
+    # Handle Presets Click
+    if selected_test:
+        st.session_state["sim_cust"] = selected_test["cust"]
+        st.session_state["sim_agent"] = selected_test["agent"]
+        st.session_state["sim_action"] = selected_test["action"]
+        st.session_state["sim_amount"] = selected_test["amount"]
+        st.session_state["active_test_brief"] = selected_test
+
+        # Auto-evaluate immediately for seamless video presentation
+        auto_res = evaluate_request(
+            customer_name=selected_test["cust"],
+            agent_name=selected_test["agent"],
+            action=selected_test["action"],
+            amount=selected_test["amount"],
+            agents_list=st.session_state.agents
+        )
+        audit_entry = {
+            "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "Customer Name": selected_test["cust"],
+            "Agent Name": selected_test["agent"],
+            "Action": selected_test["action"],
+            "Amount (₹)": selected_test["amount"],
+            "Decision": auto_res["decision"],
+            "Rule ID": auto_res["rule_id"],
+            "Rule Name": auto_res["rule_name"],
+            "Policy Rationale": auto_res["reason"]
+        }
+        append_audit_log(audit_entry)
+        st.session_state["last_decision"] = auto_res
+
+    if "active_test_brief" in st.session_state:
+        b = st.session_state["active_test_brief"]
+        st.markdown(f"""
+        <div class="test-scenario-badge">
+            <strong>🎯 Active Video Demo:</strong> {b['title']}<br>
+            <span style="font-size: 0.85rem; color: #1E3A8A;">• Expected Decision: <strong>{b['expected']}</strong></span>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
 
@@ -551,7 +655,7 @@ with tab_sim:
                 st.write(f"- **Autonomous Ceiling:** `₹10,000.00`")
                 st.write(f"- **Audit Status:** Logged to persistent CSV/JSON storage.")
         else:
-            st.info("👈 Enter agent request parameters on the left or click a quick test preset above, then click **Evaluate Request with Gatekeeper**.")
+            st.info("👈 Enter agent request parameters on the left or click any of the 6 compulsory test presets above.")
 
 # -------------------------------------------------------------
 # TAB 2: AGENT REGISTRATION & REVOCATION
@@ -721,6 +825,18 @@ with tab_policy:
 
     st.dataframe(pd.DataFrame(rules_matrix), use_container_width=True, hide_index=True)
 
+    st.markdown("---")
+    st.markdown("#### 🎯 Compulsory Test Scenarios Mapping")
+    test_mapping = [
+        {"Test Case": "Test 1", "Description": "Known registered agent viewing balance", "Expected Rule": "Rule R3", "Expected Decision": "🟢 ALLOW"},
+        {"Test Case": "Test 2", "Description": "Unknown unregistered agent transferring ₹2,000", "Expected Rule": "Rule R2", "Expected Decision": "🔴 BLOCK"},
+        {"Test Case": "Test 3", "Description": "Registered agent paying ₹15,000 (above ₹10,000 limit)", "Expected Rule": "Rule R5", "Expected Decision": "🟡 ASK CUSTOMER"},
+        {"Test Case": "Test 4", "Description": "Registered agent paying ₹5,000 (within ₹10,000 limit)", "Expected Rule": "Rule R4", "Expected Decision": "🟢 ALLOW"},
+        {"Test Case": "Test 5", "Description": "Revoked agent trying to pay ₹500", "Expected Rule": "Rule R1", "Expected Decision": "🔴 BLOCK"},
+        {"Test Case": "Test 6", "Description": "Registered agent trying an unauthorised transfer action", "Expected Rule": "Rule R6", "Expected Decision": "🔴 BLOCK"}
+    ]
+    st.dataframe(pd.DataFrame(test_mapping), use_container_width=True, hide_index=True)
+
 # ==========================================
 # SIDEBAR
 # ==========================================
@@ -732,7 +848,7 @@ with st.sidebar:
     st.markdown("**Program:** MBA in Business Analytics / AI")
     st.markdown("**PGD / Enrolment No:** `63936`")
     st.markdown("**Course Project:** Agentic AI Systems")
-    st.markdown("**Phase:** 2 (Full Decision Engine & Persistence)")
+    st.markdown("**Phase:** Day 2 (6 Compulsory Test Cases & Documentation)")
 
     st.markdown("---")
     st.markdown("### 📈 Live System Metrics")
@@ -752,4 +868,4 @@ with st.sidebar:
         st.success("Default agents restored.")
         st.rerun()
 
-    st.caption("Axis Bank Agent Gatekeeper • Educational Prototype Phase 2")
+    st.caption("Axis Bank Agent Gatekeeper • Educational Prototype Phase 2 / Day 2")
