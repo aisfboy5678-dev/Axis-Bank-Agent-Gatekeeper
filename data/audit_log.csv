@@ -1,4 +1,7 @@
 Timestamp,Customer Name,Agent Name,Action,Amount (₹),Decision,Rule ID,Rule Name,Policy Rationale
+2026-11-20 00:34:17,Amit Verma,LegacyHelper,Pay Bill,500.0,BLOCK,R1,Agent Status REVOKED,Agent 'LegacyHelper' was explicitly REVOKED by customer 'Amit Verma' on 2026-11-17 16:45:00. All operations are blocked regardless of transaction parameters.
+2026-11-20 00:33:45,Rahul Sharma,AxisFinanceBot,View Balance,0.0,ALLOW,R3,View Balance by Active Agent,Agent 'AxisFinanceBot' is active and authorized for read-only balance inquiry. Zero financial loss risk; autonomous fulfillment approved.
+2026-11-20 00:28:55,Rahul Sharma,AxisFinanceBot,View Balance,0.0,ALLOW,R3,View Balance by Active Agent,Agent 'AxisFinanceBot' is active and authorized for read-only balance inquiry. Zero financial loss risk; autonomous fulfillment approved.
 2026-11-19 00:46:50,Rahul Sharma,AxisFinanceBot,View Balance,0.0,ALLOW,R3,View Balance by Active Agent,Agent 'AxisFinanceBot' is active and authorized for read-only balance inquiry. Zero financial loss risk; autonomous fulfillment approved.
 2026-11-19 00:42:03,Priya Patel,BalanceChecker,Transfer Money,3000.0,BLOCK,R6,Action Not Permitted by Customer,"Agent 'BalanceChecker' attempted 'Transfer Money', but customer 'Priya Patel' only permitted: View Balance."
 2026-11-19 00:42:00,Amit Verma,LegacyHelper,Pay Bill,500.0,BLOCK,R1,Agent Status REVOKED,Agent 'LegacyHelper' was explicitly REVOKED by customer 'Amit Verma' on 2026-11-17 16:45:00. All operations are blocked regardless of transaction parameters.
