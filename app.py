@@ -448,7 +448,7 @@ with tab_sim:
     selected_test = None
 
     # Test 1: Known registered agent viewing balance -> ALLOW (R3)
-    if c_row1[0].button("▶️ Test 1: View Balance (R3)", use_container_width=True, help="Registered agent viewing balance -> ALLOW"):
+    if c_row1[0].button("▶️ Test 1: View Balance (R3)", use_container_width=True, help="Test 1: Known registered agent viewing balance -> ALLOW (Rule R3)"):
         selected_test = {
             "title": "Test 1: Known registered agent viewing balance",
             "cust": "Rahul Sharma",
@@ -459,7 +459,7 @@ with tab_sim:
         }
 
     # Test 2: Unknown unregistered agent transferring ₹2,000 -> BLOCK (R2)
-    if c_row1[1].button("▶️ Test 2: Unknown Agent (R2)", use_container_width=True, help="Unknown agent transferring ₹2,000 -> BLOCK"):
+    if c_row1[1].button("▶️ Test 2: Unknown Agent (R2)", use_container_width=True, help="Test 2: Unknown unregistered agent transferring ₹2,000 -> BLOCK (Rule R2)"):
         selected_test = {
             "title": "Test 2: Unknown unregistered agent transferring ₹2,000",
             "cust": "Rahul Sharma",
@@ -470,7 +470,7 @@ with tab_sim:
         }
 
     # Test 3: Registered agent paying ₹15,000 (above ₹10,000 limit) -> ASK CUSTOMER (R5)
-    if c_row1[2].button("▶️ Test 3: Pay ₹15,000 > Limit (R5)", use_container_width=True, help="Registered agent paying ₹15,000 -> ASK CUSTOMER"):
+    if c_row1[2].button("▶️ Test 3: Pay ₹15,000 > Limit (R5)", use_container_width=True, help="Test 3: Registered agent paying ₹15,000 (above ₹10,000 limit) -> ASK CUSTOMER (Rule R5)"):
         selected_test = {
             "title": "Test 3: Registered agent paying ₹15,000 (above ₹10,000 limit)",
             "cust": "Rahul Sharma",
@@ -481,7 +481,7 @@ with tab_sim:
         }
 
     # Test 4: Registered agent paying ₹5,000 (within ₹10,000 limit) -> ALLOW (R4)
-    if c_row2[0].button("▶️ Test 4: Pay ₹5,000 <= Limit (R4)", use_container_width=True, help="Registered agent paying ₹5,000 -> ALLOW"):
+    if c_row2[0].button("▶️ Test 4: Pay ₹5,000 <= Limit (R4)", use_container_width=True, help="Test 4: Registered agent paying ₹5,000 (within ₹10,000 limit) -> ALLOW (Rule R4)"):
         selected_test = {
             "title": "Test 4: Registered agent paying ₹5,000 (within ₹10,000 limit)",
             "cust": "Rahul Sharma",
@@ -492,7 +492,7 @@ with tab_sim:
         }
 
     # Test 5: Revoked agent trying to pay ₹500 -> BLOCK (R1)
-    if c_row2[1].button("▶️ Test 5: Revoked Agent ₹500 (R1)", use_container_width=True, help="Revoked agent trying to pay ₹500 -> BLOCK"):
+    if c_row2[1].button("▶️ Test 5: Revoked Agent ₹500 (R1)", use_container_width=True, help="Test 5: Revoked agent trying to pay ₹500 -> BLOCK (Rule R1)"):
         selected_test = {
             "title": "Test 5: Revoked agent trying to pay ₹500",
             "cust": "Amit Verma",
@@ -503,7 +503,7 @@ with tab_sim:
         }
 
     # Test 6: Registered agent trying an unauthorised transfer action -> BLOCK (R6)
-    if c_row2[2].button("▶️ Test 6: Unauthorised Action (R6)", use_container_width=True, help="Registered agent attempting transfer without permission -> BLOCK"):
+    if c_row2[2].button("▶️ Test 6: Unauthorised Action (R6)", use_container_width=True, help="Test 6: Registered agent trying an unauthorised transfer action -> BLOCK (Rule R6)"):
         selected_test = {
             "title": "Test 6: Registered agent trying an unauthorised transfer action",
             "cust": "Priya Patel",
