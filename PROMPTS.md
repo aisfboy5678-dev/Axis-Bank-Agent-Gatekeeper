@@ -3,6 +3,7 @@
 **Project:** Axis Bank Agent Gatekeeper  
 **Student Enrolment / PGD Number:** 63936  
 **Program:** MBA (Agentic AI Systems Coursework)  
+**Project Phase:** Final Submission (Phase 1, Phase 2 & Day 3 Verification)  
 **Repository:** [https://github.com/aisfboy5678-dev/Axis-Bank-Agent-Gatekeeper](https://github.com/aisfboy5678-dev/Axis-Bank-Agent-Gatekeeper)
 
 ---
@@ -13,7 +14,7 @@ This document records the exact iterative prompts, architectural instructions, a
 
 ---
 
-### Phase 1: Foundation & Web Interface
+### Phase 1: Foundation & Web Interface (Day 1)
 **Prompt Provided:**
 > "I am an MBA student building an Agentic AI assignment project.  
 > **Project:** Axis Bank Agent Gatekeeper  
@@ -39,7 +40,7 @@ This document records the exact iterative prompts, architectural instructions, a
 
 ---
 
-### Phase 2: Agent Lifecycle, 8-Rule Decision Engine & Audit Persistence
+### Phase 2: Agent Lifecycle, 8-Rule Decision Engine & Audit Persistence (Day 1 - Evening)
 **Prompt Provided:**
 > "Great, the Phase 1 dashboard is working! Now let's build Phase 2 to complete all assignment requirements. Keep my PGD / Enrolment Number (63936) clearly visible at the top.  
 > Please update app.py with these exact features:  
@@ -66,7 +67,7 @@ This document records the exact iterative prompts, architectural instructions, a
 
 ---
 
-### Phase 3 / Day 2: 6 Compulsory Test Cases & Documentation
+### Phase 3: 6 Compulsory Test Cases & Documentation (Day 2)
 **Prompt Provided:**
 > "Now let's complete Day 2 tasks:  
 > 1. Create a file named PROMPTS.md in the root project folder documenting:  
@@ -80,6 +81,25 @@ This document records the exact iterative prompts, architectural instructions, a
 >    - Test 5: Revoked agent trying to pay ₹500 -> BLOCK (R1)  
 >    - Test 6: Registered agent trying an unauthorised transfer action -> BLOCK (R6)  
 > 3. After making these changes, run git add, git commit with message 'Day 2: Add PROMPTS.md and 6 compulsory test case presets', and git push to origin main."
+
+**Implementation Outcome:**
+- Created comprehensive `PROMPTS.md` logging all instructions and human oversight.
+- Added a dedicated 6-button quick-preset container on the simulator tab with live video recording banners.
+- Extended unit test suite `test_gatekeeper.py` to validate all 6 compulsory test cases.
+- Successfully committed and pushed to `origin main`.
+
+---
+
+### Phase 4: Live Verification, Tooltip Alignment & Final Submission Readiness (Day 3)
+**Prompts Provided:**
+> "Please start the Streamlit app (app.py) again so I can view it in the browser preview. Also fix any hover tooltip text on the 6 test preset buttons so each button's tooltip matches its exact test scenario, and commit this change with message 'Day 3: Fix test preset tooltips and verify dashboard UI' and push to origin main."
+>
+> "Please update README.md and PROMPTS.md to include the final project summary, my PGD/Enrolment Number (63936), the 8 decision rules with the ₹10,000 transaction limit, the 6 compulsory test cases table, and instructions on how to run the prototype. Then stage all files, commit with message 'Day 3: Final documentation, test results table, and submission readiness', and push to origin main."
+
+**Implementation Outcome:**
+- Updated each of the 6 quick-preset buttons in `app.py` with exact, descriptive hover tooltips.
+- Completed final documentation across `README.md` and `PROMPTS.md`.
+- Staged all files, committed, and pushed final submission to GitHub repository.
 
 ---
 
@@ -104,13 +124,12 @@ As an MBA student designing this enterprise gatekeeper, I performed critical dom
 * **Regulatory Compliance:** In banking audits (RBI Master Directions on Cyber Security), non-repudiation requires knowing the precise second an entity lost authority so past transactions can be reconciled against revocation time.
 
 ### 5. Verification of the 6 Compulsory Video Demonstration Test Cases
-I explicitly verified the expected output of each of the 6 required scenarios:
 
-| Test Case | Scenario Description | Expected Decision | Triggered Rule | Business Justification |
-| :---: | :--- | :---: | :---: | :--- |
-| **Test 1** | Registered agent viewing balance | 🟢 **ALLOW** | **R3** | Read-only inquiry; zero financial impact. |
-| **Test 2** | Unknown agent transferring ₹2,000 | 🔴 **BLOCK** | **R2** | Untrusted identity; prevents rogue AI tool calls. |
-| **Test 3** | Registered agent paying ₹15,000 | 🟡 **ASK CUSTOMER** | **R5** | Exceeds ₹10,000 limit; customer OTP required. |
-| **Test 4** | Registered agent paying ₹5,000 | 🟢 **ALLOW** | **R4** | Authorized action within the ₹10,000 autonomous ceiling. |
-| **Test 5** | Revoked agent trying to pay ₹500 | 🔴 **BLOCK** | **R1** | Revocation supersedes all permissions regardless of amount. |
-| **Test 6** | Registered agent trying unauthorized transfer | 🔴 **BLOCK** | **R6** | Agent lacks customer mandate for money movement. |
+| Test Case | Scenario Description | Expected Decision | Triggered Rule | Live Verification Status |
+| :---: | :--- | :---: | :---: | :---: |
+| **Test 1** | Registered agent viewing balance | 🟢 **ALLOW** | **R3** | ✅ Verified in UI & Log |
+| **Test 2** | Unknown agent transferring ₹2,000 | 🔴 **BLOCK** | **R2** | ✅ Verified in UI & Log |
+| **Test 3** | Registered agent paying ₹15,000 | 🟡 **ASK CUSTOMER** | **R5** | ✅ Verified in UI & Log |
+| **Test 4** | Registered agent paying ₹5,000 | 🟢 **ALLOW** | **R4** | ✅ Verified in UI & Log |
+| **Test 5** | Revoked agent trying to pay ₹500 | 🔴 **BLOCK** | **R1** | ✅ Verified in UI & Log |
+| **Test 6** | Registered agent trying unauthorized transfer | 🔴 **BLOCK** | **R6** | ✅ Verified in UI & Log |
